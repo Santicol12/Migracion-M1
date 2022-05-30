@@ -1,27 +1,36 @@
 const { BinarySearchTree } = require("../estructuras");
-
 // En el prototipo de BinarySearchTree crear la funcion search que debe recibir un parametro y buscarlo en el arbol
-// si lo encuentra, debe retornar el nodo. En caso contrario retornar el mensaje correspondiente.
+// si lo encuentra, debe retornar el nodo. En caso contrario retornar el mensaje correspondiente: "no se encontró el valor"
 // Ejemplo      (10)
 //             /     \
 //          (7)     (12)
 //         /  \      /  \
 //      (2)  (9)  (11)  (15)
-BinarySearchTree.prototype.search = function (value) {
+BinarySearchTree.prototype.search = function (valor) {
   // Tu código aca:
-  
+  if (this.value === valor) {
+    return this.value;
+  }
+  if (this.left) {
+    return this.left.search(valor);
+  } else if (this.right) {
+    return this.right.search(valor);
+  } else {
+    return "no se encontró el valor";
+  }
 };
-const miArbolito = new BinarySearchTree(11);
-miArbolito.insert(10);
-miArbolito.insert(7);
+const miArbolito = new BinarySearchTree(10);
 miArbolito.insert(12);
+miArbolito.insert(7);
+miArbolito.insert(11);
 miArbolito.insert(2);
 miArbolito.insert(9);
 miArbolito.insert(15);
-miArbolito.insert(21);
+//miArbolito.insert(21);
 console.log(miArbolito);
 console.log(JSON.stringify(miArbolito));
-console.log("search is: ", miArbolito.search(43));
+console.log("search is: ", miArbolito.search(7));
+console.log(miArbolito.search(2));
 
 // En el prototipo de BinarySearchTree crear la funcion height que debe retornar la altura del mismo (cantidad de niveles)
 // Ejemplo      (10)           ----> nivel 0
@@ -38,10 +47,20 @@ console.log("search is: ", miArbolito.search(43));
 // [2, 9, 7, 11, 15, 12, "10"]
 BinarySearchTree.prototype.height = function () {
   // tu código aca:
-  
+  if (!this.left && !this.right) {
+    return 0;
+  } else {
+    if (this.left && !this.right) {
+      return this.left.height() + 1;
+    } else if (!this.left && this.right) {
+      return this.right.height() + 1;
+    } else {
+      return Math.max(this.left.height() + 1, this.right.height() + 1);
+    }
+  }
 };
 
-
+console.log(miArbolito.height())
 
 module.exports = {
   BinarySearchTree,

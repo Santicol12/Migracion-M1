@@ -7,19 +7,21 @@ function crearClaseLibro() {
       // El constructor de la clase Libro recibe titulo (string), autor (string), traducciones (array de objetos)
       // Inicializar las propiedades del libro con los valores recibidos como argumento
       // Tu código aca:
-    
+      this.titulo = titulo;
+      this.autor = autor;
+      this.traducciones = traducciones;
     }
 
     getTitulo() {
       // este método debe retornar el titulo del libro.
       // Tu código aca:
-      
+      return this.titulo;
     }
 
     getAutor() {
       // El método debe retornar nombre y apellido del autor
       // Tu código aca:
-     
+      return this.autor;
     }
 
     addTraduccion(idioma, editorial) {
@@ -27,9 +29,9 @@ function crearClaseLibro() {
       // { idioma: idioma, editorial: editorial} al arreglo de traducciones del libro.
       // No debe retornar nada.
       // Tu código aca:
-           // "frances", "santillana"
-           // { idioma: "frances", editorial: "santillana"}
-      
+      // "frances", "santillana"
+      // { idioma: "frances", editorial: "santillana"}
+      this.traducciones.push({ idioma: idioma, editorial: editorial });
     }
 
     getTraducciones() {
@@ -38,8 +40,12 @@ function crearClaseLibro() {
       // Suponiendo que el libro tiene estas traducciones: [{idioma: 'inglés', editorial: 'Scholastic'}, {idioma: 'castellano', editorial: 'Santillana'}]
       // libro.getTraducciones() debería devolver ['inglés', 'castellano']
       // Tu código aca:
-     
- }
+      var arregloDeIdiomas = [];
+      for (let i = 0; i < this.traducciones.length; i++) {
+        arregloDeIdiomas.push(this.traducciones[i].idioma);
+      }
+      return arregloDeIdiomas;
+    }
 
     getAlcance() {
       // El metodo debe retornar la cantidad de idiomas en la que esta traducido el libro.
@@ -48,7 +54,11 @@ function crearClaseLibro() {
       // Suponiendo que el libro tiene estas traducciones: [{idioma: 'inglés', editorial: 'Scholastic'}, {idioma: 'castellano', editorial: 'Santillana'}]
       // libro.getAlcance() deberia devolver 2
       // Tu código aca:
-      
+      var array = [];
+      for (let i = 0; i < this.traducciones.length; i++)
+        if (!array.includes(this.traducciones[i].idioma))
+          array.push(this.traducciones[i].idioma);
+      return array.length;
     }
   }
   return Libro;
@@ -57,12 +67,15 @@ function crearClaseLibro() {
 
 const printStaff = function (objeto) {
   // Retornar un arreglo que contenga los strings indicando el titulo y nombre de cada miembro del staff
-  // de esta forma "The headmaster is Albus Percival Wulfric Brian Dumbledore" 
+  // de esta forma "The headmaster is Albus Percival Wulfric Brian Dumbledore"
   // el arreglo debe mantener el orden que posee el staff del objeto.
   // Tu código aca:
- 
+  var staff = [];
+  for (const [clave, valor] of Object.entries(objeto.staff)) {
+    staff.push("The " + clave + " is " + valor.name);
+  }
+  return staff;
 };
-
 
 /* **************************************************************************************************************************** */
 
@@ -75,81 +88,61 @@ const printStaff = function (objeto) {
 var obj = {
   a: {
     a1: 10,
-    a2: '10',
-    a3: {a3a: '10', a3b: '10', a3c: {a3c1: true}}
+    a2: "10",
+    a3: { a3a: "10", a3b: "10", a3c: { a3c1: true } },
   },
   b: 2,
-  c: [1, {a: 1}, 'Duda']
-}
+  c: [1, { a: 1 }, "Duda"],
+};
 // countProps(obj)--> Deberia devolver 10 ya que el objeto inicial tiene 3 propiedades, pero a su vez
 // dentro de a tenemos 3 propiedades mas, y a3 tiene otras 3.
 // Propiedades: a, a1, a2, a3, a3a, a3b, a3c, a3c1, b, c --> 10 en total
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // EXTRAS ---------------------------------------------------------------------------------------------------------------------
 // En los ejercicios extras no contamos con los tests, por lo que no podemos comprobar que funcione correctamente
 // a no ser que lo hagamos manualmente con el correcto uso de la consola.
-var countProps = function(obj) {
+var countProps = function (obj) { // Este ejercicio no esta completo
   // Tu código aca:
-  
- }
+  var count = 0;
+  for (var property in obj) {
+    count++;
+    if (typeof obj[property] === "object" && !Array.isArray(obj[property])) {
+      count = count + countProps(obj[property]);
+    }
+  }
+  return count;
+};
 
- console.log(countProps(obj))
+console.log(countProps(obj));
 
 // {a : 3}
 // property = a
 // obj[property] = 3
-// 
+//
 
 /**************************************************************************************** */
 
 // Preparandonos para recursividad
 // Objetivo: Realizar una funcion que devuelva "Par" si el numero es par o "Impar" caso contrario, pero utilizando recursividad en lugar de %
 
-//Ejemplo 
+//Ejemplo
 // parImpar(20)
 // "Par"
 
-let parImpar = () => {
-}
+let parImpar = (num) => {
+  if (num === 0) {
+    return "Par";
+  } else if (num === 1) {
+    return "Impar";
+  } else {
+    return parImpar(num - 2);
+  }
+};
 
+console.log(parImpar(10));
 
 module.exports = { crearClaseLibro, printStaff };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // // PARA USAR EN PYTHON TUTOR TEST
 // function crearClaseLibro() {
@@ -159,7 +152,6 @@ module.exports = { crearClaseLibro, printStaff };
 //       this.autor=autor,
 //       this.traducciones=traducciones
 
-      
 //     }
 
 //     getTitulo() {
@@ -175,7 +167,7 @@ module.exports = { crearClaseLibro, printStaff };
 //     }
 
 //     getTraducciones() {
-//       let traducciones=[]; 
+//       let traducciones=[];
 //       this.traducciones.forEach(element => {
 //         traducciones.push(element.idioma)
 //       });
@@ -184,8 +176,8 @@ module.exports = { crearClaseLibro, printStaff };
 //     }
 
 //     getAlcance() {
-//       let idiomas=new Set(this.getTraducciones()) 
-      
+//       let idiomas=new Set(this.getTraducciones())
+
 //       return idiomas.size
 //     }
 //   }
@@ -210,10 +202,9 @@ module.exports = { crearClaseLibro, printStaff };
 //           { idioma: "castellano", editorial: "emece" },
 //           { idioma: "francés", editorial: "Éditions Gallimard" },
 //         ])
-        
+
 //         libro.titulo
 //         libro.traducciones
 //         libro.addTraduccion("portugues", "Presença")
 //         libro.traducciones
 //         libro.getAlcance()
-

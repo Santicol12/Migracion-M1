@@ -7,7 +7,25 @@ function timeConversion(time) {
   // timeConversion("12:60") // false
   // timeConversion("09:00 PM") // "21:00"
   // tu codigo acá
-
+  if (
+    time.length === 10 &&
+    time.substring(0, 2) < 13 &&
+    time.substring(3, 5) < 60 &&
+    time.substring(6, 8) < 60
+  ) {
+    if (time.substring(8, 10) === "PM" && time.substring(0, 2) < 12) {
+      return +time.substring(0, 2) + 12 + time.substring(2, 8);
+    } else if (
+      time.substring(8, 10) === "AM" &&
+      time.substring(0, 2) === "12"
+    ) {
+      return "00" + time.substring(2, 8);
+    } else {
+      return time.substring(0, 8);
+    }
+  } else {
+    return false;
+  }
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -20,8 +38,15 @@ Crear una funcion saludar que pueda fijar cada vez que la guardo en una variable
 Recibira en la funcion interna el nombre a quien tiene que saludar y retornara el saludo correspondiente seguido por el nombre al ser invocada
 */
 function saludar(saludo) {
-  
+  return function saludoEspecial(nombre) {
+    return saludo + " " + nombre;
+  };
 }
+
+var saludoEspañol = saludar("hola");
+console.log(saludoEspañol("Santiago"));
+var saludoIngles = saludar("Hello");
+console.log(saludoIngles("Santiago"));
 
 /*---------------------------------------------------*/
 
@@ -31,9 +56,15 @@ Adicionalmente agregarle una funcion que cuando pasen 8 seg incremente el contad
 
 */
 function contador() {
-  
+  var i = 0;
+  return function suma() {
+    setTimeout(function () {
+       i += 100
+    }, 8000);
+    i += 1
+    return i
+  }
 }
-
 
 /*---------------------------------------------------*/
 /*
@@ -47,9 +78,15 @@ parametro a la funcion global.
  Pepe(); // "El proximo año va a tener 22"
 */
 function creciendo(n) {
- 
+  var i = n
+  return function () {
+    i++
+    return i 
+  }
 }
 
+var pepe = creciendo(70)
+console.log(pepe())
 /*---------------------------------------------------*/
 // Retorna una funcion que cuando sea invocada con un valor mayor a 50 retorne un valor decreciente,
 // pero si el valor es menor o igual que 50 retorne un valor creciente
@@ -65,9 +102,30 @@ function creciendo(n) {
 // newCounter(); // 49
 
 function arribaAbajo(n) {
-  
+  var i = n
+  if (n < 51) {
+    return function () {
+      i++
+      return i
+    }
+  } else {
+    return function () {
+      i--
+      return i
+    }
+  }
 }
 
+var haciaArriba = arribaAbajo(40)
+console.log(haciaArriba())
+console.log(haciaArriba());
+console.log(haciaArriba());
+console.log(haciaArriba());
+var haciaAbajo = arribaAbajo(70)
+console.log(haciaAbajo())
+console.log(haciaAbajo());
+console.log(haciaAbajo());
+console.log(haciaAbajo());
 /*---------------------------------------------------*/
 
 // Implementar la funcion closureSum que permita generar nuevas funciones que representen
@@ -80,8 +138,17 @@ function arribaAbajo(n) {
 // - multBySix(4) --> 24
 
 var closureMult = function (multiplier) {
- 
+  var i = multiplier
+  return function (n) {
+    result = i * n
+    return result
+  }
 };
+
+var multPorCuatro = closureMult(4)
+console.log(multPorCuatro(10))
+var multPorOnce = closureMult(11);
+console.log(multPorOnce(9))
 
 /*---------------------------------------------------*/
 
@@ -97,7 +164,13 @@ function cacheFunction(cb) {
   // si la invocas de nuevo con 5, deberia retornar 25 (guardado previament en el cache)
   // Tips, usá un objeto donde cada propiedad sea un argumento, y el valor el resultado.
   // usá hasOwnProperty!
- 
+  var objeto = {};
+  return function cache(arg) {
+    if (!objeto.hasOwnProperty(arg)) {
+      objeto[arg] = cb(arg);
+    }
+    return objeto[arg];
+  };
 }
 
 module.exports = {

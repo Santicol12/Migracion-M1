@@ -7,18 +7,38 @@ function bubbleSort(array) {
   // el array recibido como parámetro
   // Devolver el array ordenado resultante
   // Tu código:
-  
+  for (let i = array.length; 0 < i; i--) {
+    for (let j = 0; j < i; j++) {
+      if (array[j] > array[j + 1]) {
+        var aux = array[j];
+        array[j] = array[j + 1];
+        array[j + 1] = aux;
+      }
+    }
+  }
+  return array;
 }
-// bubbleSort(array);
+
+// console.log(bubbleSort(array))
 
 function insertionSort(array) {
   // Implementar el método conocido como insertionSort para ordenar de menor a mayor
   // el array recibido como parámetro utilizando arreglos
   // Devolver el array ordenado resultante
   // Tu código:
-  
+  for (let i = 1; i < array.length; i++) {
+    for (let j = i; 0 < j; j--) {
+      if (array[j - 1] > array[j]) {
+        var aux = array[j - 1];
+        array[j - 1] = array[j];
+        array[j] = aux;
+      }
+    }
+  }
+  return array;
 }
-// insertionSort(array);
+
+//console.log(insertionSort(array))
 
 // optimo en menor cantidad de espacio (menos variables)
 // ya que su var se encuentra fuera del for
@@ -32,36 +52,62 @@ function selectionSort(array) {
   // el array recibido como parámetro utilizando dos arreglos
   // Devolver el array ordenado resultante
   // Tu código:
-  
+  for (let i = 0; i < array.length; i++) {
+    var min = i;
+    for (let j = i + 1; j < array.length; j++) {
+      if (array[min] > array[j]) {
+        min = j;
+      }
+    }
+    var aux = array[i];
+    array[i] = array[min];
+    array[min] = aux;
+  }
+  return array;
 }
-// selectionSort(array);
+// console.log(selectionSort(array))
 
 function quickSort(array) {
   // Implementar el método conocido como quickSort para ordenar de menor a mayor
   // el array recibido como parámetro
   // Devolver el array ordenado resultante
   // Tu código:
-  
+  if (array.length < 2) {
+    return array;
+  }
+  let pivote = array[0];
+  let izq = [];
+  let der = [];
+  let ordenados = [];
+
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] < pivote) {
+      izq.push(array[i]);
+    } else if (array[i] > pivote) {
+      der.push(array[i]);
+    } else if (pivote === array[i]) {
+      ordenados.push(array[i]);
+    }
+  }
+  return quickSort(izq).concat(ordenados).concat(quickSort(der));
 }
-// quickSort(array);
+
+console.log(quickSort(array))
 
 function mergeSort(array) {
   // Implementar el método conocido como mergeSort para ordenar de menor a mayor
   // el array recibido como parámetro
   // Devolver el array ordenado resultante
   // Tu código:
- 
+  
 }
 
-function merge(left, right) {
- 
-}
+function merge(left, right) {}
 
 //console.log("merge sort is: ",mergeSort(array));
 
 // No modificar nada debajo de esta línea
 // --------------------------------
-
 
 module.exports = {
   bubbleSort,

@@ -1,11 +1,17 @@
 // Usando la recursion calcular el producto de todos los numeros de dado arreglo
 // ej:
 // producto([1, 2, 5]) devuelve 10
-
+var arreglo = [2, 3, 4];
 const producto = function (array) {
   //escribe aqui tu codigo [7, 9, 3]
-
+  let numero = 1;
+  if (array.length === 0) {
+    return numero;
+  } else {
+    return array.pop() * producto(array) * numero;
+  }
 };
+console.log(producto(arreglo));
 
 // Recursividad en javascript con objetos
 // Dado un objeto con objetos anidados utilizar la recursión para crear una función
@@ -39,11 +45,32 @@ let obj = {
   prop2: 6,
 };
 const isThere = function (obj, value) {
+  /*
   // tu código aca
-  
+  for (const key in obj) {
+    if (obj[key] === value) {
+      return true;
+    } else if (typeof obj[key] === "object") {
+      if (isThere(obj[key], value)) {
+        return true;
+      }
+    }
+  }
+  return false; */
+    // tu código aca
+    for (let key in obj) {
+      if (obj[key] === value) {
+        return true;
+      }
+    }
+    for (let key in obj) {
+      if (obj[key] instanceof Object) { 
+        return isThere(obj[key], value);
+      }
+    }
+    return false;
 };
-console.log(isThere(obj, 6));
-
+console.log(isThere(obj, 'Albus'));
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // EXTRAS ---------------------------------------------------------------------------------------------------------------------
@@ -59,9 +86,19 @@ console.log(isThere(obj, 6));
 // "Par"
 
 let parImpar = (num) => {
- 
+  if (num >= 0) {
+    if (num === 0) {
+      return "Par";
+    } else if (num === 1) {
+      return "Impar";
+    } else {
+      return parImpar(num - 2);
+    }
+  } else {
+    return "El numero no puede ser negativos";
+  }
 };
-console.log(parImpar(7));
+console.log(parImpar(15));
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -76,8 +113,14 @@ console.log(parImpar(7));
 let nuevoArray = [];
 
 function restar(n) {
-  
+  nuevoArray.push(n);
+  if (n === 1) {
+    return nuevoArray;
+  } else {
+    return restar(n - 1);
+  }
 }
+console.log(restar(10));
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -88,9 +131,16 @@ function restar(n) {
 // --> 'anusus aloh'
 
 function reverse(str) {
-  
+  // return str.split("").reverse().join("");
+  if (str.length === 0) return false;
+  if (str.length === 1) return str;
+  if (str.length > 1) {
+    let array = str.split("");
+    return array.pop() + reverse(array.join(""));
+  }
 }
 
+console.log(reverse("hola como estas ?"));
 // "hola"
 //  0123
 //   1----
@@ -112,9 +162,21 @@ function reverse(str) {
 // Ejemplo:
 //    const array = [1, [2, [3,4]], [5,6], 7];
 //    countArray(array); --> Debería devolver 28 (1 + 2 + 3 + 4 + 5 + 6 + 7)
+var array1 = [1, [2, [3, 4]], [5, 6], 7];
 
 var countArray = function (array) {
-  
+  let sum = 0;
+  for (let i = 0; i < array.length; i++) {
+    if (Array.isArray(array[i])) {
+      sum = sum + countArray(array[i]);
+    } else {
+      sum = sum + array[i];
+    }
+  }
+  return sum;
+
 };
+
+console.log(countArray(array1));
 
 module.exports = { producto, isThere };

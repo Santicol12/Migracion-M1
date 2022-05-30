@@ -13,11 +13,28 @@ const { Stack, Queue } = require("../estructuras");
 // Ejemplo:
 //   Colombia Argentina: aibmoloC anitnegrA
 //   Mar Azulado oro : raM odaluzA oro
-
 function efectoEspejo(str) {
+  // Colombia Argentina
   //tu codigo aqui
-  
+  let stringInv = ''
+  let auxString = "";
+  let auxStack = new Stack();
+  for (let i = str.length -1; -2 < i; i--) {
+    if (str[i] === " " || i === -1) {
+      auxStack.colocar(auxString);
+      auxString = ''
+    } else {
+      auxString += str[i];
+    }
+  }
+  while (0 < auxStack.size()) {
+    stringInv = stringInv + ' ' + auxStack.quitar()
+  }
+  return stringInv.trim()
 }
+
+console.log(efectoEspejo('COLOMBIA ES EL MEJOR PAIS DEL MUNDO'))
+
 
 const stackito = new Stack();
 stackito.colocar({ name: "Jaja" });
@@ -29,7 +46,6 @@ console.log(stackito);
 // [[{}{}{}]]
 // {[{{{{{{}}}}}}]}
 // [{{{}{}{}{}{}}}]
-
 
 // EXTRAS ---------------------------------------------------------------------------------------------------------------------
 // En los ejercicios extras no contamos con los tests, por lo que no podemos comprobar que funcione correctamente
@@ -65,9 +81,23 @@ console.log(stackito);
   */
 
 function parentesisBalanceaDOS(str) {
- 
+  let left = 0
+  let right = 0
+  for (let i = 0; i < str.length; i++) {
+    if (str[i] === '(') {
+      left++
+    } else if (str[i] === ')') {
+      right++
+    }
+  }
+  if (right === left) {
+    return 'Todo esta ok'
+  } else {
+    return "Hay uno o mas paréntesis desbalanceados";
+  }
 }
 
+console.log(parentesisBalanceaDOS("(hola (que (tal)"));
 
 module.exports = {
   efectoEspejo,

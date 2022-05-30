@@ -22,7 +22,39 @@ var controlAcces = function (queue, event) {
   // crean instancia de Queue
   // los que cumplen los rquerimientos solo agregan (push) al array sus names
   // en caso que no cumplan los dequeue de la queue
-  
+  let arr = [];
+  let numTicket = 0;
+  let queueNumTicket = new Queue();
+  let auxNum = 0;
+  for (let i = 0; i < queue.size(); i++) {
+    auxObj = queue.dequeue();
+    queue.enqueue(auxObj);
+    if (auxObj.age > 17 && auxObj.ticket.event === event) {
+      numTicket = auxObj.ticket.number;
+      let j = 0;
+      while (j < queueNumTicket.size()) {
+        j++;
+        auxNum = queueNumTicket.dequeue();
+        queueNumTicket.enqueue(auxNum);
+        if (auxNum === numTicket) {
+          break;
+        }
+      }
+      if (queueNumTicket.size() === 0) {
+        queueNumTicket.enqueue(numTicket);
+        arr.push(auxObj.fullname);
+      } else if (auxNum !== numTicket) {
+        arr.push(auxObj.fullname);
+      }
+      while (j < queueNumTicket.size()) {
+        j++;
+        auxNum = queueNumTicket.dequeue();
+        queueNumTicket.enqueue(auxNum);
+      }
+      queueNumTicket.enqueue(numTicket);
+    }
+  }
+  return arr;
 };
 
 // Test Queue
@@ -32,18 +64,23 @@ queue.enqueue({
   age: 17,
   ticket: { number: 1, event: "Day" },
 });
+
 queue.enqueue(6);
 queue.enqueue("Hola");
+console.log(queue.size());
 console.log(queue);
-
+console.log(controlAcces(queue, "Tomorrowland"));
+console.log(queue.array[0].fullname)
+console.log(queue.array[0].ticket.event)
 
 // EXTRAS ---------------------------------------------------------------------------------------------------------------------
 // En los ejercicios extras no contamos con los tests, por lo que no podemos comprobar que funcione correctamente
 // a no ser que lo hagamos manualmente con el correcto uso de la consola.
 //////////////////////////// RECURSIVIDAD //////////////////////////////////////////////////////////////////////////////
 
-let array = [1, 2, 3, 1, 2, 3, { a: 1 }, { a: 1 }];
+let array = [1, 2, 3, 1, 2, 3, 'santiago', { a: 1 }, { a: 1 }, 'santiago'];
 let demo = new Set(array);
+console.log(demo)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -76,11 +113,33 @@ let demo = new Set(array);
   mergeQueues(queueOne, queueTwo) --> [1,2,3,4,5,6]
   IMPORTANTE: Lo que recibe NO son arreglos sino que son Queues.
   */
+var queueUno = new Queue();
+var queueDos = new Queue();
+queueUno.enqueue(1);
+queueUno.enqueue(3);
+queueUno.enqueue(5);
+queueDos.enqueue(2);
+queueDos.enqueue(4);
+queueDos.enqueue(6);
+console.log(queueUno);
+console.log(queueDos);
+
+let newQueue = new Queue();
+
 var mergeQueues = function (queueOne, queueTwo) {
   // Tu código aca:
   // [1, 3, 5]           [2, 4, 6]        ----> [3, 5]             [4, 6]
- 
+  if (queueTwo.size() > 0) {
+    newQueue.enqueue(queueOne.dequeue());
+    newQueue.enqueue(queueDos.dequeue());
+    return mergeQueues(queueOne, queueTwo);
+  } else {
+   return newQueue
+  }
 };
+
+var nose = mergeQueues(queueUno, queueDos)
+console.log(nose)
 
 /*
   // &&
@@ -102,10 +161,25 @@ f    f    f
 // filtraQueue(array)
 // -> ["a", "b", [1, 2, 3]]
 
+let array1 = [1, "a", 2, "b", [1, 2, 3], 'b', 4, 7, true, [1, 2, 3, 4, 5], 'hola'];
+
+let queueFiltrada = new Queue()
+
 function filtraQueue(arg) {
-  
+  if (arg.length > 0) {
+    var aux = arg.shift();
+    if (typeof aux !== 'number') {
+      queueFiltrada.enqueue(aux);
+      return filtraQueue(arg);
+    } else {
+      return filtraQueue(arg);
+    }
+  } else {
+     return queueFiltrada;
+  }
 }
 
+console.log(filtraQueue(array1))
 
 module.exports = {
   controlAcces,

@@ -102,7 +102,7 @@ describe("Clase", function () {
 describe("PrintStaff", function () {
   const hogwarts = {
     staff: {
-      headmaster: {
+      headmaster: { 
         name: "Albus Percival Wulfric Brian Dumbledore",
       },
       keeperOfKeys: {

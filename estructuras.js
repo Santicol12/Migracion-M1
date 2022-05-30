@@ -50,7 +50,7 @@ function Queue() {
   // }
 
   function Node(valor){
-    // this.numberNodo = 1;
+    this.numberNodo = 1;
     this.value = valor;
     this.next = null;
   }
@@ -70,7 +70,7 @@ function Queue() {
       tailActual.next = nuevoNodo;
     }
     this.len++;
-   // nuevoNodo.numberNodo = this.len;
+   nuevoNodo.numberNodo = this.len;
   }
 
   
